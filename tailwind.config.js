@@ -47,6 +47,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        pink: "#EE85B5",
       },
       borderRadius: {
         lg: `var(--radius)`,
