@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL_DEV: z.string().url(),
     DATABASE_URL_MAIN: z.string().url(),
-    CLERK_SECRET_KEY: X.string(),
+    CLERK_SECRET_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
