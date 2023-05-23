@@ -9,5 +9,7 @@ export const siteConfig = {
     github: "https://github.com/shadcn/ui",
     docs: "https://ui.shadcn.com",
     enhancer: "/enhancer",
+    home: "/",
+    credits: "/credits",
   },
 }

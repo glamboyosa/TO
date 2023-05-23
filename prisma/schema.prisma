@@ -6,6 +6,27 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL_DEV")
+  relationMode = "prisma"
+}
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  firstName String?
+  lastName String?
+  freeCredits Int @default(3)
+  freeCreditsCreatedAt DateTime @default(now())
+  freeCreditsExpiry DateTime
+  paidCredits Credits?
+}
+model Credits {
+    id        Int      @id @default(autoincrement())
+  number Int
+  isPaid Boolean
+  paymentId String
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique // relation scalar field (used in the `@relation` attribute above)
+  @@index([userId])
 }

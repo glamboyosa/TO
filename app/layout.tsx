@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
 import { ThemeProvider } from "@/components/theme-provider"
 
+import QueryProvider from "./query-provider"
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -41,10 +43,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className=" flex min-h-screen flex-col items-center justify-center">
-              <SiteHeader />
-              <div className="">{children}</div>
-            </div>
+            <QueryProvider>
+              <div className=" flex min-h-screen flex-col items-center justify-center">
+                <SiteHeader />
+                <div className="">{children}</div>
+              </div>
+            </QueryProvider>
           </ThemeProvider>
         </body>
       </html>
