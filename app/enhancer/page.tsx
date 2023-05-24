@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useDropzone } from "react-dropzone"
 
 import { buttonVariants } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
@@ -28,6 +29,7 @@ export default function EnhancerPage() {
       maxFiles: 1,
       onDrop,
     })
+  const { toast } = useToast()
   const { data, isLoading, isError } = useQuery<{ success: boolean }>(
     ["authUser"],
     {
@@ -44,7 +46,10 @@ export default function EnhancerPage() {
   }
   useEffect(() => {
     if (isDragReject || fileRejections.length > 0) {
-      //
+      toast({
+        title: "Something Went Wrong",
+        description: "Please upload appropriate file type",
+      })
     }
   }, [isDragReject, fileRejections])
   return (
