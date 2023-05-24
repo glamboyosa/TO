@@ -7,5 +7,5 @@ export default authMiddleware({
 })
 
 export const config = {
-  matcher: [siteConfig.links.enhancer],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }

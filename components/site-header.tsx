@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect } from "react"
+import { useLayoutEffect, useState } from "react"
 import Link from "next/link"
+import { UserButton, useUser } from "@clerk/nextjs"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { useLocalStorage } from "react-use"
@@ -17,21 +18,26 @@ const tabs = [
 export function SiteHeader() {
   const activeTab = useActiveTab((state) => state.activeTab)
   const setActiveTab = useActiveTab((state) => state.setActiveTab)
-  const { theme } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const { isSignedIn, isLoaded } = useUser()
+  const [arbitrary, setArbitrary] = useState(false)
   const [localStorageValue, setLocalStorageValue] = useLocalStorage(
     "activeTab",
     activeTab
   )
-  useEffect(() => {
-    //
+  useLayoutEffect(() => {
+    // basically when the theme changes we wanna force a re-render for the dark / light mode to be in sync
+    console.log(theme)
+
+    setArbitrary(!arbitrary)
   }, [theme])
   // TO-DO NAVIGATION
-  console.log(theme)
+
   return (
     // eslint-disable-next-line tailwindcss/classnames-order
     <div
       className={`${
-        theme === undefined
+        theme === "undefined"
           ? "bg-white"
           : theme === "light"
           ? "bg-white"
@@ -56,7 +62,7 @@ export function SiteHeader() {
                 layoutId="bubble"
                 className={`absolute inset-0 z-10 bg-pink ${
                   theme === undefined
-                    ? "mix-blend-darken"
+                    ? "mix-blend-lighten"
                     : theme === "light"
                     ? "mix-blend-darken"
                     : "mix-blend-lighten"
@@ -68,6 +74,7 @@ export function SiteHeader() {
             <Link href={tab.link}>{tab.label}</Link>
           </button>
         ))}
+        {isSignedIn && isLoaded && <UserButton />}
         <ThemeToggle />
       </div>
     </div>

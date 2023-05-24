@@ -12,17 +12,29 @@ export async function GET() {
   try {
     const user = await currentUser()
     const freeCreditsExpiryDate = freeCreditsExpiry()
+
+    console.log(user)
+    const existingUser = await prismaClient.user.findFirst({
+      where: {
+        email: user!.emailAddresses[0].emailAddress,
+      },
+    })
+    if (existingUser) {
+      console.log("user exists", existingUser)
+      return NextResponse.json({ success: true })
+    }
     await prismaClient.user.create({
       data: {
-        email: user!.emailAddresses[0] as unknown as string,
+        email: user!.emailAddresses[0].emailAddress,
         firstName: user?.firstName,
         lastName: user?.lastName,
         freeCreditsExpiry: freeCreditsExpiryDate,
       },
     })
 
-    NextResponse.json({ success: true })
+    return NextResponse.json({ success: true })
   } catch (error) {
+    console.log(error)
     return new Response("Something went wrong", { status: 400 })
   }
 }
