@@ -28,6 +28,7 @@ export default function EnhancerPage() {
       },
       maxFiles: 1,
       onDrop,
+      maxSize: 4194304,
     })
   const { toast } = useToast()
   const { data, isLoading, isError } = useQuery<{ success: boolean }>(
