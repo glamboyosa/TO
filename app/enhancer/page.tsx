@@ -49,7 +49,7 @@ export default function EnhancerPage() {
     if (isDragReject || fileRejections.length > 0) {
       toast({
         title: "Something Went Wrong",
-        description: "Please upload appropriate file type",
+        description: "File too big",
       })
     }
   }, [isDragReject, fileRejections])
