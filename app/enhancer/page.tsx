@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { env } from "@/env.mjs"
 import { Auth } from "@/fetch-functions/api"
@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
+  const [arbitrary, setArbitrary] = useState(false)
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log("trigger on click and on drop")
@@ -59,6 +60,7 @@ export default function EnhancerPage() {
     return reader.result
   }
   const submitHandler = async () => {
+    console.log("LOG?")
     const formData = new FormData()
     const file = files[0]
     console.log(files[0])
@@ -89,6 +91,12 @@ export default function EnhancerPage() {
       })
     }
   }, [isDragReject, fileRejections])
+  useLayoutEffect(() => {
+    // basically when the theme changes we wanna force a re-render for the dark / light mode to be in sync
+    console.log(theme)
+
+    setArbitrary(!arbitrary)
+  }, [theme])
   return (
     <section>
       {data?.success && !isLoading ? (
@@ -108,7 +116,16 @@ export default function EnhancerPage() {
           <aside className="  pr-[2px]">
             {files.length > 0 &&
               files.map((acceptedFile) => (
-                <div key={acceptedFile.name} className="mt-4 shadow-lg p-8">
+                <div
+                  key={acceptedFile.name}
+                  className={`mt-4  rounded-md p-8 shadow-lg ${
+                    theme === "undefined"
+                      ? "shadow-white"
+                      : theme === "light"
+                      ? "shadow-black"
+                      : "shadow-white/70"
+                  }`}
+                >
                   <div className="flex space-x-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +172,7 @@ export default function EnhancerPage() {
               ))}
           </aside>
           <button
-            onSubmit={submitHandler}
+            onClick={submitHandler}
             className={`${buttonVariants({ size: "lg" })} mt-10`}
           >
             Upload Image 🚀
