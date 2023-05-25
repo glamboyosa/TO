@@ -1,10 +1,14 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
+import { env } from "@/env.mjs"
+import { Auth } from "@/fetch-functions/api"
 import { useQuery } from "@tanstack/react-query"
+import { useTheme } from "next-themes"
 import { useDropzone } from "react-dropzone"
 
+import { UserAuthType } from "@/types/user"
 import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -31,16 +35,48 @@ export default function EnhancerPage() {
       maxSize: 4194304,
     })
   const { toast } = useToast()
-  const { data, isLoading, isError } = useQuery<{ success: boolean }>(
+  const { data, isLoading, isError } = useQuery<UserAuthType>(
     ["authUser"],
+    () => Auth.fetchUser(),
     {
-      queryFn: () => fetch("/api/users").then((res) => res.json()),
+      staleTime: 5 * 120 * 1000, // in 10 mins you become stale,
     }
   )
   const removeFileHandler = () => {
     setFiles([])
   }
   const { push } = useRouter()
+  const { theme } = useTheme()
+  async function convertFileToDataUrl(blobOrFile: File | Blob) {
+    const reader = new FileReader()
+    reader.readAsDataURL(blobOrFile)
+    await new Promise(
+      (resolve) =>
+        (reader.onload = function () {
+          resolve("")
+        })
+    )
+    return reader.result
+  }
+  const submitHandler = async () => {
+    const formData = new FormData()
+    const file = files[0]
+    console.log(files[0])
+    const buffer = await file.arrayBuffer()
+    const maybeBlob = new Blob([buffer])
+    const fr = new FileReader()
+
+    fr.readAsArrayBuffer(file)
+    const base64 = await convertFileToDataUrl(file)
+    const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
+    console.log("base_64", base64)
+    console.log(maybeBlob)
+    console.log(alsoProbablyBlob)
+    formData.append("file", base64 as string)
+    formData.append("fileName", file.name)
+
+    // submitInputs.mutate(formData);
+  }
   if (isError) {
     push("/sign-in")
     console.log("error")
@@ -72,7 +108,7 @@ export default function EnhancerPage() {
           <aside className="  pr-[2px]">
             {files.length > 0 &&
               files.map((acceptedFile) => (
-                <div key={acceptedFile.name} className="mt-4 bg-gray-100 p-8">
+                <div key={acceptedFile.name} className="mt-4 shadow-lg p-8">
                   <div className="flex space-x-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +154,10 @@ export default function EnhancerPage() {
                 </div>
               ))}
           </aside>
-          <button className={`${buttonVariants({ size: "lg" })} mt-10`}>
+          <button
+            onSubmit={submitHandler}
+            className={`${buttonVariants({ size: "lg" })} mt-10`}
+          >
             Upload Image 🚀
           </button>
         </div>

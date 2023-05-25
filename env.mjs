@@ -6,6 +6,9 @@ export const env = createEnv({
     DATABASE_URL_DEV: z.string().url(),
     DATABASE_URL_MAIN: z.string().url(),
     CLERK_SECRET_KEY: z.string(),
+    CLOUDINARY_CLOUD_NAME: z.string().max(10),
+    CLOUDINARY_API_KEY: z.string().min(10),
+    CLOUDINARY_API_SECRET: z.string().min(12),
   },
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
@@ -16,5 +19,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   },
 })
