@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { env } from "@/env.mjs"
-import { Auth } from "@/fetch-functions/api"
-import { useQuery } from "@tanstack/react-query"
+import { Auth, Enhancer } from "@/fetch-functions/api"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useTheme } from "next-themes"
 import { useDropzone } from "react-dropzone"
 
@@ -43,6 +43,14 @@ export default function EnhancerPage() {
       staleTime: 5 * 120 * 1000, // in 10 mins you become stale,
     }
   )
+  const submitImageToCloudinary = useMutation(
+    ["submitImage"],
+    (body: FormData) => Enhancer.submitImageToCloudinary(body)
+  )
+  const submitImageForTransformation = useMutation(
+    ["submitImage"],
+    (body: FormData) => Enhancer.submitImageToAPI(body)
+  )
   const removeFileHandler = () => {
     setFiles([])
   }
@@ -70,14 +78,14 @@ export default function EnhancerPage() {
 
     fr.readAsArrayBuffer(file)
     const base64 = await convertFileToDataUrl(file)
-    const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
-    console.log("base_64", base64)
-    console.log(maybeBlob)
-    console.log(alsoProbablyBlob)
+    // const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
+    // console.log("base_64", base64)
+    // console.log(maybeBlob)
+    // console.log(alsoProbablyBlob)
     formData.append("file", base64 as string)
-    formData.append("fileName", file.name)
+    formData.append("upload_preset", file.name)
 
-    // submitInputs.mutate(formData);
+    const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(formData)
   }
   if (isError) {
     push("/sign-in")

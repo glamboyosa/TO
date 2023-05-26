@@ -1,24 +1,14 @@
 import { NextResponse } from "next/server"
-import { env } from "@/env.mjs"
-import { v2 } from "cloudinary"
 
-export async function PUT(request: Request) {
-  const cloudinary = v2
-  cloudinary.config({
-    cloud_name: env.CLOUDINARY_CLOUD_NAME,
-    api_key: env.CLOUDINARY_API_KEY,
-    api_secret: env.CLOUDINARY_API_SECRET,
-  })
+export async function POST(request: Request) {
+  console.log("hi")
   try {
     const form = await request.formData()
-    const fileDataURI = form.get("file") as string
-    const publicId = form.get("fileName") as string
+    const url = form.get("cloudinaryURL") as string
 
-    const res = await cloudinary.uploader.upload(fileDataURI, {
-      public_id: publicId,
-    })
+    console.log(console.log(form))
 
-    return NextResponse.json({ secureURL: res.secure_url, url: res.url })
+    return NextResponse.json({ url })
   } catch (e) {
     return new Response(`Something went wrong ${JSON.stringify(e)}`, {
       status: 400,
