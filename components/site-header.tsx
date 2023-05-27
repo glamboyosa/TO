@@ -46,33 +46,35 @@ export function SiteHeader() {
     >
       <div className="cursor flex space-x-6">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => {
-              setActiveTab(tab.id as Tabs)
-              setLocalStorageValue(tab.id as Tabs)
-            }}
-            className={`relative  rounded-full px-3 py-1.5 text-sm font-medium  outline-sky-400 transition focus-visible:outline-2`}
-            style={{
-              WebkitTapHighlightColor: "transparent",
-            }}
-          >
-            {activeTab === tab.id && (
-              <motion.span
-                layoutId="bubble"
-                className={`absolute inset-0 z-10 bg-pink ${
-                  theme === undefined
-                    ? "mix-blend-lighten"
-                    : theme === "light"
-                    ? "mix-blend-darken"
-                    : "mix-blend-lighten"
-                }`}
-                style={{ borderRadius: 9999 }}
-                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-              />
-            )}
-            <Link href={tab.link}>{tab.label}</Link>
-          </button>
+          <Link href={tab.link}>
+            <button
+              key={tab.id}
+              onClick={() => {
+                setActiveTab(tab.id as Tabs)
+                setLocalStorageValue(tab.id as Tabs)
+              }}
+              className={`relative  rounded-full px-3 py-1.5 text-sm font-medium  outline-sky-400 transition focus-visible:outline-2`}
+              style={{
+                WebkitTapHighlightColor: "transparent",
+              }}
+            >
+              {activeTab === tab.id && (
+                <motion.span
+                  layoutId="bubble"
+                  className={`absolute inset-0 z-10 bg-pink ${
+                    theme === undefined
+                      ? "mix-blend-lighten"
+                      : theme === "light"
+                      ? "mix-blend-darken"
+                      : "mix-blend-lighten"
+                  }`}
+                  style={{ borderRadius: 9999 }}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              {tab.label}
+            </button>
+          </Link>
         ))}
         {isSignedIn && isLoaded && <UserButton />}
         <ThemeToggle />
