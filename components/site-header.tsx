@@ -25,14 +25,16 @@ export function SiteHeader() {
     "activeTab",
     activeTab
   )
+  // basically when the UI mounts changes we wanna force a re-render for the dark / light mode to be in sync
+  //
+
   useLayoutEffect(() => {
-    // basically when the theme changes we wanna force a re-render for the dark / light mode to be in sync
-    console.log(theme)
-
     setArbitrary(!arbitrary)
-  }, [theme])
+  }, [])
   // TO-DO NAVIGATION
-
+  if (!arbitrary) {
+    return null
+  }
   return (
     // eslint-disable-next-line tailwindcss/classnames-order
     <div
