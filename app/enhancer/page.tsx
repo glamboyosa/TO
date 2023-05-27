@@ -7,6 +7,7 @@ import { Auth, Enhancer } from "@/fetch-functions/api"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useTheme } from "next-themes"
 import { useDropzone } from "react-dropzone"
+import { TypeAnimation } from "react-type-animation"
 
 import { UserAuthType } from "@/types/user"
 import { buttonVariants } from "@/components/ui/button"
@@ -101,11 +102,13 @@ export default function EnhancerPage() {
     }
   }, [isDragReject, fileRejections])
   useLayoutEffect(() => {
-    // basically when the theme changes we wanna force a re-render for the dark / light mode to be in sync
     console.log(theme)
 
     setArbitrary(!arbitrary)
-  }, [theme])
+  }, [])
+  if (!arbitrary) {
+    return null
+  }
   if (isError) {
     push("/sign-in")
     console.log("error")
@@ -113,6 +116,26 @@ export default function EnhancerPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center">
+        <TypeAnimation
+          wrapper="h1"
+          sequence={[
+            // Same String at the start will only be typed once, initially
+            "One sec, we're cooking...",
+            2000,
+            "One sec, we're cooking..",
+            1500,
+            "One sec, we're cooking.",
+            1500,
+            "One sec, we're cooking..",
+            1500,
+            "One sec, we're cooking...",
+            2000,
+          ]}
+          speed={50}
+          className="mb-10 mt-20  font-serif text-3xl font-bold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl xl:mt-0"
+          repeat={Infinity}
+        />
+
         <CookingLoader />
       </div>
     )

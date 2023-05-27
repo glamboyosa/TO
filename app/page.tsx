@@ -35,14 +35,14 @@ export default function IndexPage() {
         <div className="flex items-center justify-center overflow-hidden">
           <Image
             src="/woman.avif"
-            className="blur-sm"
+            className="rounded blur-sm"
             alt="a woman"
             width={300}
             height={300}
           />
           <Image
             src="/woman.avif"
-            className="z-10 -ml-24 mt-44"
+            className="z-10 -ml-24 mt-44 rounded"
             alt="a woman"
             width={300}
             height={300}
