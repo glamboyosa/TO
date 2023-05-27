@@ -3,6 +3,7 @@
 import { useLayoutEffect, useState } from "react"
 import Link from "next/link"
 import { UserButton, useUser } from "@clerk/nextjs"
+import { dark } from "@clerk/themes"
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { useLocalStorage } from "react-use"
@@ -78,7 +79,11 @@ export function SiteHeader() {
             </button>
           </Link>
         ))}
-        {isSignedIn && isLoaded && <UserButton />}
+        {isSignedIn && isLoaded && (
+          <UserButton
+            appearance={theme === "dark" ? {baseTheme: dark} : {}}
+          />
+        )}
         <ThemeToggle />
       </div>
     </div>
