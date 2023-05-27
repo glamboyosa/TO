@@ -11,10 +11,12 @@ import { useDropzone } from "react-dropzone"
 import { UserAuthType } from "@/types/user"
 import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
+import CookingLoader from "@/components/loading/cooking-loader"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [arbitrary, setArbitrary] = useState(false)
+  const [loading, setLoading] = useState(true)
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log("trigger on click and on drop")
@@ -85,12 +87,11 @@ export default function EnhancerPage() {
     formData.append("file", base64 as string)
     formData.append("upload_preset", file.name)
 
-    const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(formData)
+    const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
+      formData
+    )
   }
-  if (isError) {
-    push("/sign-in")
-    console.log("error")
-  }
+
   useEffect(() => {
     if (isDragReject || fileRejections.length > 0) {
       toast({
@@ -105,6 +106,17 @@ export default function EnhancerPage() {
 
     setArbitrary(!arbitrary)
   }, [theme])
+  if (isError) {
+    push("/sign-in")
+    console.log("error")
+  }
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <CookingLoader />
+      </div>
+    )
+  }
   return (
     <section>
       {data?.success && !isLoading ? (
