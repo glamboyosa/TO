@@ -136,7 +136,7 @@ export default function EnhancerPage() {
           repeat={Infinity}
         />
 
-        <CookingLoader />
+        <CookingLoader theme={theme as "light" | "dark"} />
       </div>
     )
   }

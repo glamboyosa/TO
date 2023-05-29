@@ -81,7 +81,7 @@ export function SiteHeader() {
         ))}
         {isSignedIn && isLoaded && (
           <UserButton
-            appearance={theme === "dark" ? {baseTheme: dark} : {}}
+            appearance={theme === "dark" ? { baseTheme: dark } : {}}
           />
         )}
         <ThemeToggle />
