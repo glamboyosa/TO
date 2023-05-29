@@ -49,9 +49,8 @@ export function SiteHeader() {
     >
       <div className="cursor flex space-x-6">
         {tabs.map((tab) => (
-          <Link href={tab.link}>
+          <Link key={tab.id} href={tab.link}>
             <button
-              key={tab.id}
               onClick={() => {
                 setActiveTab(tab.id as Tabs)
                 setLocalStorageValue(tab.id as Tabs)
@@ -81,7 +80,16 @@ export function SiteHeader() {
         ))}
         {isSignedIn && isLoaded && (
           <UserButton
-            appearance={theme === "dark" ? { baseTheme: dark } : {}}
+            appearance={
+              theme === "dark"
+                ? {
+                    baseTheme: dark,
+                    elements: {
+                      card: "font-sans",
+                    },
+                  }
+                : {}
+            }
           />
         )}
         <ThemeToggle />

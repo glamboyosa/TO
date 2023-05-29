@@ -17,7 +17,7 @@ import CookingLoader from "@/components/loading/cooking-loader"
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [arbitrary, setArbitrary] = useState(false)
-  const [loading, setLoading] = useState(true)
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log("trigger on click and on drop")
@@ -75,22 +75,28 @@ export default function EnhancerPage() {
     const formData = new FormData()
     const file = files[0]
     console.log(files[0])
-    const buffer = await file.arrayBuffer()
-    const maybeBlob = new Blob([buffer])
-    const fr = new FileReader()
+    try {
+      const buffer = await file.arrayBuffer()
+      const maybeBlob = new Blob([buffer])
+      const fr = new FileReader()
 
-    fr.readAsArrayBuffer(file)
-    const base64 = await convertFileToDataUrl(file)
-    // const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
-    // console.log("base_64", base64)
-    // console.log(maybeBlob)
-    // console.log(alsoProbablyBlob)
-    formData.append("file", base64 as string)
-    formData.append("upload_preset", file.name)
+      fr.readAsArrayBuffer(file)
+      const base64 = await convertFileToDataUrl(file)
+      // const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
+      // console.log("base_64", base64)
+      // console.log(maybeBlob)
+      // console.log(alsoProbablyBlob)
 
-    const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
-      formData
-    )
+      formData.append("file", base64 as string)
+      formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
+
+      const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
+        formData
+      )
+      console.log(cloudinaryResponse)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -113,7 +119,10 @@ export default function EnhancerPage() {
     push("/sign-in")
     console.log("error")
   }
-  if (loading) {
+  if (
+    submitImageForTransformation.isLoading ||
+    submitImageToCloudinary.isLoading
+  ) {
     return (
       <div className="flex flex-col items-center justify-center">
         <TypeAnimation
