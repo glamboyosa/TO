@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { env } from "@/env.mjs"
 import { Auth, Enhancer } from "@/fetch-functions/api"
@@ -18,7 +19,7 @@ import CookingLoader from "@/components/loading/cooking-loader"
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [arbitrary, setArbitrary] = useState(false)
-
+  const [publicId, setPublicId] = useState("")
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log("trigger on click and on drop")
@@ -77,38 +78,29 @@ export default function EnhancerPage() {
     const file = files[0]
     console.log(files[0])
     try {
-      // const buffer = await file.arrayBuffer()
-      // const maybeBlob = new Blob([buffer])
-      // const fr = new FileReader()
+      const base64 = await convertFileToDataUrl(file)
 
-      // fr.readAsArrayBuffer(file)
-      //const base64 = await convertFileToDataUrl(file)
-      // const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
-      // console.log("base_64", base64)
-      // console.log(maybeBlob)
-      // console.log(alsoProbablyBlob)
+      formData.append("file", base64 as string)
+      formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
 
-      // formData.append("file", base64 as string)
-      // formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
-
-      // const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
-      //   formData
-      // )
-      // console.log(cloudinaryResponse)
-      //  const publicId = getPublicId(cloudinaryResponse.secure_url)
-      const edgeAPIFormData = new FormData()
-      edgeAPIFormData.append(
-        "cloudinaryURL",
-        "https://res.cloudinary.com/glamboyosa/image/upload/v1685387242/kgdis7s5ouda3tmbheuy.jpg"
+      const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
+        formData
       )
+      console.log(cloudinaryResponse)
+      const publicId = getPublicId(cloudinaryResponse.secure_url)
+      setPublicId(publicId)
+
       const body = {
-        cloudinaryURL:
-          "https://res.cloudinary.com/glamboyosa/image/upload/v1685387242/kgdis7s5ouda3tmbheuy.jpg",
+        cloudinaryURL: cloudinaryResponse.secure_url,
       }
       await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const downloadImageCallback = () => {
+    console.log("just seeing if you download")
   }
 
   useEffect(() => {
@@ -161,8 +153,43 @@ export default function EnhancerPage() {
       </div>
     )
   }
-  // handle image download UI 
-  
+  // handle image download UI
+  if (
+    submitImageForTransformation.data &&
+    !submitImageForTransformation.isLoading
+  ) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <div className="mb-8 mt-10 flex gap-6">
+          <Image
+            src={submitImageForTransformation.data.input_url}
+            className="rounded shadow-sm"
+            alt="your input image"
+            width={300}
+            height={300}
+          />
+
+          <Image src="/angel.webp" alt="cupid angel" width={100} height={100} />
+
+          <Image
+            src={submitImageForTransformation.data.input_url}
+            className="rounded shadow-sm"
+            alt="your input image"
+            width={300}
+            height={300}
+          />
+        </div>
+        <a
+          href={submitImageForTransformation.data.output_url}
+          download={"yourimage.png"}
+          className={`${buttonVariants({ size: "lg" })} mt-10`}
+          onClick={downloadImageCallback}
+        >
+          Download your image 🚀
+        </a>
+      </div>
+    )
+  }
   return (
     <section>
       {data?.success && !isLoading ? (
