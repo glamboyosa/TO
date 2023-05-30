@@ -10,6 +10,7 @@ import { useDropzone } from "react-dropzone"
 import { TypeAnimation } from "react-type-animation"
 
 import { UserAuthType } from "@/types/user"
+import { getPublicId } from "@/lib/helpers/getPublicId"
 import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import CookingLoader from "@/components/loading/cooking-loader"
@@ -47,12 +48,12 @@ export default function EnhancerPage() {
     }
   )
   const submitImageToCloudinary = useMutation(
-    ["submitImage"],
+    ["submitImageForCloudinary"],
     (body: FormData) => Enhancer.submitImageToCloudinary(body)
   )
   const submitImageForTransformation = useMutation(
-    ["submitImage"],
-    (body: FormData) => Enhancer.submitImageToAPI(body)
+    ["submitImageForTransformation"],
+    (body: { cloudinaryURL: string }) => Enhancer.submitImageToAPI(body)
   )
   const removeFileHandler = () => {
     setFiles([])
@@ -76,24 +77,35 @@ export default function EnhancerPage() {
     const file = files[0]
     console.log(files[0])
     try {
-      const buffer = await file.arrayBuffer()
-      const maybeBlob = new Blob([buffer])
-      const fr = new FileReader()
+      // const buffer = await file.arrayBuffer()
+      // const maybeBlob = new Blob([buffer])
+      // const fr = new FileReader()
 
-      fr.readAsArrayBuffer(file)
-      const base64 = await convertFileToDataUrl(file)
+      // fr.readAsArrayBuffer(file)
+      //const base64 = await convertFileToDataUrl(file)
       // const alsoProbablyBlob = new Blob([fr.result as ArrayBuffer])
       // console.log("base_64", base64)
       // console.log(maybeBlob)
       // console.log(alsoProbablyBlob)
 
-      formData.append("file", base64 as string)
-      formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
+      // formData.append("file", base64 as string)
+      // formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
 
-      const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
-        formData
+      // const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
+      //   formData
+      // )
+      // console.log(cloudinaryResponse)
+      //  const publicId = getPublicId(cloudinaryResponse.secure_url)
+      const edgeAPIFormData = new FormData()
+      edgeAPIFormData.append(
+        "cloudinaryURL",
+        "https://res.cloudinary.com/glamboyosa/image/upload/v1685387242/kgdis7s5ouda3tmbheuy.jpg"
       )
-      console.log(cloudinaryResponse)
+      const body = {
+        cloudinaryURL:
+          "https://res.cloudinary.com/glamboyosa/image/upload/v1685387242/kgdis7s5ouda3tmbheuy.jpg",
+      }
+      await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
       console.log(error)
     }
@@ -149,6 +161,8 @@ export default function EnhancerPage() {
       </div>
     )
   }
+  // handle image download UI 
+  
   return (
     <section>
       {data?.success && !isLoading ? (

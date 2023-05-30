@@ -1,6 +1,6 @@
 import { env } from "env.mjs"
 
-import { ImageTransformResult } from "@/types/enhancer"
+import { ImageAIResult, ImageTransformResult } from "@/types/enhancer"
 import { UserAuthType } from "@/types/user"
 
 export const Auth = {
@@ -9,10 +9,10 @@ export const Auth = {
 }
 
 export const Enhancer = {
-  submitImageToAPI: (body: FormData): Promise<ImageTransformResult> =>
+  submitImageToAPI: (body: { cloudinaryURL: string }): Promise<ImageAIResult> =>
     fetch("/api/upload", {
       method: "post",
-      body,
+      body: JSON.stringify(body),
     }).then((res) => res.json()),
   submitImageToCloudinary: (body: FormData): Promise<ImageTransformResult> =>
     fetch(

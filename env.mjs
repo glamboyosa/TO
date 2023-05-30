@@ -5,6 +5,8 @@ export const env = createEnv({
   server: {
     DATABASE_URL_DEV: z.string().url(),
     DATABASE_URL_MAIN: z.string().url(),
+    DEEPAI_API_KEY: z.string().min(20),
+    STABILITY_API_KEY: z.string().min(20),
     CLERK_SECRET_KEY: z.string(),
     CLOUDINARY_CLOUD_NAME: z.string().max(10),
     CLOUDINARY_API_KEY: z.string().min(10),
@@ -18,6 +20,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL_DEV: process.env.DATABASE_URL_DEV,
     DATABASE_URL_MAIN: process.env.DATABASE_URL_MAIN,
+    DEEPAI_API_KEY: process.env.DEEPAI_API_KEY,
+    STABILITY_API_KEY: process.env.STABILITY_API_KEY,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
