@@ -54,7 +54,8 @@ export default function EnhancerPage() {
   )
   const submitImageForTransformation = useMutation(
     ["submitImageForTransformation"],
-    (body: { cloudinaryURL: string }) => Enhancer.submitImageToAPI(body)
+    (body: { cloudinaryURL: string | ArrayBuffer }) =>
+      Enhancer.submitImageToAPI(body)
   )
   const removeFileHandler = () => {
     setFiles([])
@@ -80,18 +81,18 @@ export default function EnhancerPage() {
     try {
       const base64 = await convertFileToDataUrl(file)
 
+      console.log(base64, "BASE64")
       formData.append("file", base64 as string)
       formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
 
       const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
         formData
       )
-      console.log(cloudinaryResponse)
+      console.log(cloudinaryResponse, "CLOUDINARY RESPONSE")
       const publicId = getPublicId(cloudinaryResponse.secure_url)
       setPublicId(publicId)
-
       const body = {
-        cloudinaryURL: cloudinaryResponse.secure_url,
+        cloudinaryURL: base64 as ArrayBuffer,
       }
       await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
@@ -181,8 +182,11 @@ export default function EnhancerPage() {
         </div>
         <a
           href={submitImageForTransformation.data.output_url}
-          download={"yourimage.png"}
-          className={`${buttonVariants({ size: "lg" })} mt-10`}
+          download={`${crypto.randomUUID()}.png`}
+          className={`${buttonVariants({
+            size: "lg",
+            variant: "outline",
+          })} mt-10`}
           onClick={downloadImageCallback}
         >
           Download your image 🚀
