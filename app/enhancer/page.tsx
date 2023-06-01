@@ -19,6 +19,8 @@ import { useToast } from "@/components/ui/use-toast"
 import Toaster from "@/components/Toaster"
 import CookingLoader from "@/components/loading/cooking-loader"
 
+import { decrementCredits } from "../actions"
+
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [arbitrary, setArbitrary] = useState(false)
@@ -107,52 +109,8 @@ export default function EnhancerPage() {
       console.log(error)
     }
   }
-  const decrementCredits = async (
-    userMail: string
-  ): Promise<{ creditsCount?: number; success: Boolean }> => {
-    "use server"
-    try {
-      const currentUserWithCredits = await prismaClient.credits.findFirst({
-        where: {
-          user: {
-            email: userMail,
-          },
-        },
-      })
+  // not ppossible
 
-      const currentUser = await prismaClient.user.findFirst({
-        where: {
-          email: userMail,
-        },
-      })
-      // IF FREE CREDITS OR PAID CREDITS ABOUT TO FINISH SEND EMAIL
-      if (currentUserWithCredits === null) {
-        const updatedUser = await prismaClient.user.update({
-          where: {
-            email: currentUser?.email,
-          },
-          data: {
-            freeCredits: (currentUser?.freeCredits as number) - 1,
-          },
-        })
-
-        return { creditsCount: updatedUser.freeCredits, success: true }
-      } else {
-        const updatedUserWithCredits = await prismaClient.credits.update({
-          where: {
-            userId: currentUserWithCredits.userId,
-          },
-          data: {
-            number: currentUserWithCredits.number - 1,
-          },
-        })
-
-        return { creditsCount: updatedUserWithCredits.number, success: true }
-      }
-    } catch (e) {
-      return { success: false }
-    }
-  }
   const downloadImageCallback = async () => {
     console.log("just seeing if you download")
     const { success, creditsCount } = await decrementCredits(
@@ -178,6 +136,8 @@ export default function EnhancerPage() {
       })
       submitImageForTransformation.reset()
       submitImageToCloudinary.reset()
+    } else {
+      console.log("JUST CSEES")
     }
   }
 
@@ -254,37 +214,44 @@ export default function EnhancerPage() {
   ) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <h1 className="mb-10  mt-20 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl">
+        <h1 className=" mb-8 mt-24 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl">
           All done 😄
         </h1>
-        <div className="mb-8 mt-10 flex aspect-square items-center gap-8">
-          <Image
-            src={submitImageForTransformation.data.input_url}
-            className={`rounded-lg shadow ${
-              theme === "light" ? "shadow-black/30" : "shadow-white/30"
-            }`}
-            alt="your input image"
-            width={530}
-            height={700}
-            priority
-          />
-          <div>&rarr;</div>
-          <Image
-            src={submitImageForTransformation.data.output_url}
-            className={`rounded-lg shadow  ${
-              theme === "light" ? "shadow-black/30" : "shadow-white/30"
-            }`}
-            alt="your input image"
-            width={530}
-            height={700}
-            priority
-          />
+        <div className="mb-8  flex aspect-auto flex-col items-center gap-8 md:flex-row">
+          <div className="flex flex-col gap-6">
+            <h3 className="text-xl">Original Picture</h3>
+
+            <Image
+              src={submitImageForTransformation.data.input_url}
+              className={`rounded-lg shadow ${
+                theme === "light" ? "shadow-black/30" : "shadow-white/30"
+              }`}
+              alt="your input image"
+              width={530}
+              height={700}
+              priority
+            />
+          </div>
+          <div className="flex flex-col gap-6">
+            <h3 className="text-xl">Enhanced Picture</h3>
+
+            <Image
+              src={submitImageForTransformation.data.output_url}
+              className={`rounded-lg shadow  ${
+                theme === "light" ? "shadow-black/30" : "shadow-white/30"
+              }`}
+              alt="your input image"
+              width={530}
+              height={700}
+              priority
+            />
+          </div>
         </div>
         <button
           className={`${buttonVariants({
             size: "lg",
             variant: "outline",
-          })} mt-10`}
+          })} `}
           onClick={downloadImageCallback}
         >
           Download your image 🚀
