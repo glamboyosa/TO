@@ -21,7 +21,14 @@ export async function GET() {
     })
     if (existingUser) {
       console.log("user exists", existingUser)
-      return NextResponse.json({ success: true })
+      return NextResponse.json({
+        success: true,
+        user: {
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          email: existingUser.email,
+        },
+      })
     }
     await prismaClient.user.create({
       data: {

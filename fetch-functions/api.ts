@@ -9,9 +9,7 @@ export const Auth = {
 }
 
 export const Enhancer = {
-  submitImageToAPI: (body: {
-    cloudinaryURL: string | ArrayBuffer
-  }): Promise<ImageAIResult> =>
+  submitImageToAPI: (body: { cloudinaryURL: string }): Promise<ImageAIResult> =>
     fetch("/api/upload", {
       method: "post",
       body: JSON.stringify(body),

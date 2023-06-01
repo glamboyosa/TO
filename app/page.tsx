@@ -39,6 +39,7 @@ export default function IndexPage() {
             alt="a woman"
             width={300}
             height={300}
+            priority
           />
           <Image
             src="/woman.avif"
@@ -46,10 +47,11 @@ export default function IndexPage() {
             alt="a woman"
             width={300}
             height={300}
+            priority
           />
         </div>
       </section>
-      <Toaster />
+      <Toaster fromIndex />
     </div>
   )
 }

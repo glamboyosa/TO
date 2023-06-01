@@ -38,6 +38,7 @@
     "react-dropzone": "^14.2.3",
     "react-type-animation": "^3.0.1",
     "react-use": "^17.4.0",
+    "replicate": "^0.12.1",
     "sharp": "^0.31.3",
     "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5",

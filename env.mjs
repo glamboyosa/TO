@@ -7,6 +7,7 @@ export const env = createEnv({
     DATABASE_URL_MAIN: z.string().url(),
     DEEPAI_API_KEY: z.string().min(20),
     STABILITY_API_KEY: z.string().min(20),
+    REPLICATE_API_KEY: z.string().min(20),
     CLERK_SECRET_KEY: z.string(),
     CLOUDINARY_CLOUD_NAME: z.string().max(10),
     CLOUDINARY_API_KEY: z.string().min(10),
@@ -22,6 +23,7 @@ export const env = createEnv({
     DATABASE_URL_MAIN: process.env.DATABASE_URL_MAIN,
     DEEPAI_API_KEY: process.env.DEEPAI_API_KEY,
     STABILITY_API_KEY: process.env.STABILITY_API_KEY,
+    REPLICATE_API_KEY: process.env.REPLICATE_API_KEY,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:

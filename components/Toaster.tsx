@@ -13,16 +13,20 @@ import {
 
 import { useToast } from "./ui/use-toast"
 
-type ToasterProps = {}
+type ToasterProps = {
+  fromIndex?: boolean
+}
 
-const Toaster: React.FC<ToasterProps> = () => {
+const Toaster: React.FC<ToasterProps> = ({ fromIndex }) => {
   const { toasts, toast } = useToast()
   useEffect(() => {
-    toast({
-      title: "100% Private",
-      description:
-        "We delete your images the moment you download it and every 24h.",
-    })
+    if (fromIndex) {
+      toast({
+        title: "100% Private",
+        description:
+          "We delete your images the moment you download it and every 24h.",
+      })
+    }
   }, [])
   return (
     <ToastProvider>

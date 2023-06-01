@@ -1,7 +1,7 @@
 import { create } from "zustand"
 
 export type Tabs = "home" | "enhancer" | "credits"
-type ActiveTabState = {
+interface ActiveTabState {
   activeTab: Tabs
   setActiveTab: (tab: Tabs) => void
 }

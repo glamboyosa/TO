@@ -6,6 +6,18 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
+      },
+      {
+        protocol: "https",
+        hostname: "replicate.delivery"
+      }
+    ]
+  }
 }
 
 export default nextConfig

@@ -10,16 +10,22 @@ import { useTheme } from "next-themes"
 import { useDropzone } from "react-dropzone"
 import { TypeAnimation } from "react-type-animation"
 
-import { UserAuthType } from "@/types/user"
+import { PrismaUser, UserAuthType } from "@/types/user"
 import { getPublicId } from "@/lib/helpers/getPublicId"
+import { prismaClient } from "@/lib/prisma"
+import useUser from "@/lib/store/useUser"
 import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
+import Toaster from "@/components/Toaster"
 import CookingLoader from "@/components/loading/cooking-loader"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [arbitrary, setArbitrary] = useState(false)
   const [publicId, setPublicId] = useState("")
+  const user = useUser((state) => state.user)
+  const setUser = useUser((state) => state.setUser)
+  const { toast } = useToast()
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log("trigger on click and on drop")
@@ -40,7 +46,7 @@ export default function EnhancerPage() {
       onDrop,
       maxSize: 4194304,
     })
-  const { toast } = useToast()
+
   const { data, isLoading, isError } = useQuery<UserAuthType>(
     ["authUser"],
     () => Auth.fetchUser(),
@@ -54,8 +60,7 @@ export default function EnhancerPage() {
   )
   const submitImageForTransformation = useMutation(
     ["submitImageForTransformation"],
-    (body: { cloudinaryURL: string | ArrayBuffer }) =>
-      Enhancer.submitImageToAPI(body)
+    (body: { cloudinaryURL: string }) => Enhancer.submitImageToAPI(body)
   )
   const removeFileHandler = () => {
     setFiles([])
@@ -91,17 +96,89 @@ export default function EnhancerPage() {
       console.log(cloudinaryResponse, "CLOUDINARY RESPONSE")
       const publicId = getPublicId(cloudinaryResponse.secure_url)
       setPublicId(publicId)
+      // transform the image
+
+      const cloudinaryTransformedImage = `https://res.cloudinary.com/glamboyosa/image/upload/c_scale,h_530,w_700/${publicId}.jpg`
       const body = {
-        cloudinaryURL: base64 as ArrayBuffer,
+        cloudinaryURL: cloudinaryTransformedImage,
       }
       await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
       console.log(error)
     }
   }
+  const decrementCredits = async (
+    userMail: string
+  ): Promise<{ creditsCount?: number; success: Boolean }> => {
+    "use server"
+    try {
+      const currentUserWithCredits = await prismaClient.credits.findFirst({
+        where: {
+          user: {
+            email: userMail,
+          },
+        },
+      })
 
-  const downloadImageCallback = () => {
+      const currentUser = await prismaClient.user.findFirst({
+        where: {
+          email: userMail,
+        },
+      })
+      // IF FREE CREDITS OR PAID CREDITS ABOUT TO FINISH SEND EMAIL
+      if (currentUserWithCredits === null) {
+        const updatedUser = await prismaClient.user.update({
+          where: {
+            email: currentUser?.email,
+          },
+          data: {
+            freeCredits: (currentUser?.freeCredits as number) - 1,
+          },
+        })
+
+        return { creditsCount: updatedUser.freeCredits, success: true }
+      } else {
+        const updatedUserWithCredits = await prismaClient.credits.update({
+          where: {
+            userId: currentUserWithCredits.userId,
+          },
+          data: {
+            number: currentUserWithCredits.number - 1,
+          },
+        })
+
+        return { creditsCount: updatedUserWithCredits.number, success: true }
+      }
+    } catch (e) {
+      return { success: false }
+    }
+  }
+  const downloadImageCallback = async () => {
     console.log("just seeing if you download")
+    const { success, creditsCount } = await decrementCredits(
+      user?.email as string
+    )
+    if (success) {
+      const imgBlob = await fetch(
+        submitImageForTransformation.data?.output_url as string
+      ).then((resp) => resp.blob())
+      const a = document.createElement("a")
+      a.href = (await convertFileToDataUrl(imgBlob)) as string
+      a.download = `${crypto.randomUUID()}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      toast({
+        title: `${
+          creditsCount === 1
+            ? "Attention! only 1 credit left"
+            : `${creditsCount} left`
+        }`,
+        description: `You only have ${creditsCount} left. Consider buying some credits to take full advantage of the platform.`,
+      })
+      submitImageForTransformation.reset()
+      submitImageToCloudinary.reset()
+    }
   }
 
   useEffect(() => {
@@ -117,8 +194,24 @@ export default function EnhancerPage() {
 
     setArbitrary(!arbitrary)
   }, [])
+
   if (!arbitrary) {
     return null
+  }
+  if (data?.user && user === null) {
+    setUser(data?.user)
+  }
+  if (user) {
+    if (
+      user.freeCredits === 0 ||
+      (user.paidCredits && user.paidCredits.number === 0)
+    ) {
+      toast({
+        title: "Attention! No credits left",
+
+        description: `You only have 0 credits left. Consider buying some credits to take full advantage of the platform.`,
+      })
+    }
   }
   if (isError) {
     push("/sign-in")
@@ -161,28 +254,33 @@ export default function EnhancerPage() {
   ) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <div className="mb-8 mt-10 flex gap-6">
+        <h1 className="mb-10  mt-20 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl">
+          All done 😄
+        </h1>
+        <div className="mb-8 mt-10 flex aspect-square items-center gap-8">
           <Image
             src={submitImageForTransformation.data.input_url}
-            className="rounded shadow-sm"
+            className={`rounded-lg shadow ${
+              theme === "light" ? "shadow-black/30" : "shadow-white/30"
+            }`}
             alt="your input image"
-            width={300}
-            height={300}
+            width={530}
+            height={700}
+            priority
           />
-
-          <Image src="/angel.webp" alt="cupid angel" width={100} height={100} />
-
+          <div>&rarr;</div>
           <Image
-            src={submitImageForTransformation.data.input_url}
-            className="rounded shadow-sm"
+            src={submitImageForTransformation.data.output_url}
+            className={`rounded-lg shadow  ${
+              theme === "light" ? "shadow-black/30" : "shadow-white/30"
+            }`}
             alt="your input image"
-            width={300}
-            height={300}
+            width={530}
+            height={700}
+            priority
           />
         </div>
-        <a
-          href={submitImageForTransformation.data.output_url}
-          download={`${crypto.randomUUID()}.png`}
+        <button
           className={`${buttonVariants({
             size: "lg",
             variant: "outline",
@@ -190,7 +288,8 @@ export default function EnhancerPage() {
           onClick={downloadImageCallback}
         >
           Download your image 🚀
-        </a>
+        </button>
+        <Toaster />
       </div>
     )
   }
@@ -270,6 +369,7 @@ export default function EnhancerPage() {
           </aside>
           <button
             onClick={submitHandler}
+            disabled={files.length === 0}
             className={`${buttonVariants({ size: "lg" })} mt-10`}
           >
             Upload Image 🚀
