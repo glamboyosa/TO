@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server"
+import SignUpEmail from "@/emails/sign-up"
 import { auth, currentUser } from "@clerk/nextjs"
+import { env } from "env.mjs"
+import { Resend } from "resend"
 
 import { freeCreditsExpiry } from "@/lib/helpers/freeCreditsExpiry"
 import { prismaClient } from "@/lib/prisma"
+
+const resend = new Resend(env.RESEND_API_KEY)
 
 export async function GET() {
   const { userId } = auth()
@@ -13,7 +18,6 @@ export async function GET() {
     const user = await currentUser()
     const freeCreditsExpiryDate = freeCreditsExpiry()
 
-    console.log(user)
     const existingUser = await prismaClient.user.findFirst({
       where: {
         email: user!.emailAddresses[0].emailAddress,
@@ -30,7 +34,7 @@ export async function GET() {
         },
       })
     }
-    await prismaClient.user.create({
+    const newUser = await prismaClient.user.create({
       data: {
         email: user!.emailAddresses[0].emailAddress,
         firstName: user?.firstName,
@@ -38,8 +42,23 @@ export async function GET() {
         freeCreditsExpiry: freeCreditsExpiryDate,
       },
     })
-
-    return NextResponse.json({ success: true })
+    if (newUser) {
+      const data = await resend.sendEmail({
+        from: "onboarding@resend.dev",
+        to: newUser.email,
+        subject: "Thank you for signing up!",
+        react: SignUpEmail({ firstName: newUser.firstName as string }),
+      })
+      console.log(data)
+    }
+    return NextResponse.json({
+      success: true,
+      user: {
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      },
+    })
   } catch (error) {
     console.log(error)
     return new Response("Something went wrong", { status: 400 })

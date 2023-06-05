@@ -109,10 +109,8 @@ export default function EnhancerPage() {
       console.log(error)
     }
   }
-  // not ppossible
 
   const downloadImageCallback = async () => {
-    console.log("just seeing if you download")
     const { success, creditsCount } = await decrementCredits(
       user?.email as string
     )
@@ -137,7 +135,10 @@ export default function EnhancerPage() {
       submitImageForTransformation.reset()
       submitImageToCloudinary.reset()
     } else {
-      console.log("JUST CSEES")
+      toast({
+        title: "Something went wrong",
+        description: `Looks like something went wrong downloading the image, Please try again later.`,
+      })
     }
   }
 

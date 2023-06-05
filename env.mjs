@@ -12,6 +12,7 @@ export const env = createEnv({
     CLOUDINARY_CLOUD_NAME: z.string().max(10),
     CLOUDINARY_API_KEY: z.string().min(10),
     CLOUDINARY_API_SECRET: z.string().min(12),
+    RESEND_API_KEY: z.string().min(12),
   },
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
@@ -24,6 +25,7 @@ export const env = createEnv({
     DEEPAI_API_KEY: process.env.DEEPAI_API_KEY,
     STABILITY_API_KEY: process.env.STABILITY_API_KEY,
     REPLICATE_API_KEY: process.env.REPLICATE_API_KEY,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:

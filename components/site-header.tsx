@@ -14,7 +14,6 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const tabs = [
   { id: "home", label: "Home", link: "/" },
   { id: "Enhancer", label: "Enhancer", link: "/enhancer" },
-  { id: "credits", label: "Credits", link: "/credits" },
 ]
 export function SiteHeader() {
   const activeTab = useActiveTab((state) => state.activeTab)
@@ -40,11 +39,7 @@ export function SiteHeader() {
     // eslint-disable-next-line tailwindcss/classnames-order
     <div
       className={`${
-        theme === "undefined"
-          ? "bg-white"
-          : theme === "light"
-          ? "bg-white"
-          : "bg-black"
+        theme === "light" ? "bg-white" : "bg-black"
       } fixed top-[1vh] z-20 w-auto  rounded-md p-2 font-serif  shadow-xl xl:top-[5vh]`}
     >
       <div className="cursor flex space-x-6">
