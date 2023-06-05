@@ -19,7 +19,7 @@ import { useToast } from "@/components/ui/use-toast"
 import Toaster from "@/components/Toaster"
 import CookingLoader from "@/components/loading/cooking-loader"
 
-import { decrementCredits } from "../actions"
+import { decrementCredits, deleteImagefromCloudinary } from "../actions"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
@@ -132,6 +132,8 @@ export default function EnhancerPage() {
         }`,
         description: `You only have ${creditsCount} left. Consider buying some credits to take full advantage of the platform.`,
       })
+      await deleteImagefromCloudinary(publicId)
+
       submitImageForTransformation.reset()
       submitImageToCloudinary.reset()
     } else {

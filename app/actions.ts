@@ -5,6 +5,7 @@ import { env } from "env.mjs"
 import { Resend } from "resend"
 
 import { prismaClient } from "@/lib/prisma"
+import { generateSHA1, generateSignature } from "@/lib/utils"
 
 export const decrementCredits = async (
   userMail: string
@@ -65,5 +66,33 @@ export const decrementCredits = async (
     }
   } catch (e) {
     return { success: false }
+  }
+}
+
+export const deleteImagefromCloudinary = async (publicId: string) => {
+  "use server"
+  const cloudName = env.CLOUDINARY_CLOUD_NAME
+  const timestamp = new Date().getTime()
+  const apiKey = env.CLOUDINARY_API_KEY
+  const apiSecret = env.CLOUDINARY_API_SECRET
+  const signature = generateSHA1(generateSignature(publicId, apiSecret))
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`
+  const body = {
+    public_id: publicId,
+    signature: signature,
+    api_key: apiKey,
+    timestamp: timestamp,
+  }
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+    })
+    if (response.ok) {
+      return true
+    }
+  } catch (e) {
+    console.error(e)
+    return false
   }
 }
