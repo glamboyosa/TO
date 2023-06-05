@@ -16,7 +16,7 @@ model User {
   email     String   @unique
   firstName String?
   lastName String?
-  freeCredits Int @default(3)
+  freeCredits Int @default(4)
   freeCreditsCreatedAt DateTime @default(now())
   freeCreditsExpiry DateTime
   paidCredits Credits?

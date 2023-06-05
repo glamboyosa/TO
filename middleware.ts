@@ -1,9 +1,9 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { authMiddleware } from "@clerk/nextjs/server"
 
 import { siteConfig } from "./config/site"
 
 export default authMiddleware({
-  publicRoutes: [siteConfig.links.home, siteConfig.links.credits],
+  publicRoutes: [siteConfig.links.home],
 })
 
 export const config = {

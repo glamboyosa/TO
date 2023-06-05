@@ -5,9 +5,7 @@ export const siteConfig = {
   description: "TO – AI Enhanced Clarity at Your Finger Tips",
 
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
+    github: "https://github.com/glamboyosa/to",
     enhancer: "/enhancer",
     home: "/",
     credits: "/credits",
