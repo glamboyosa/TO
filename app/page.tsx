@@ -34,7 +34,7 @@ export default function IndexPage() {
         </div>
         <div className="flex items-center justify-center overflow-hidden">
           <Image
-            src="/woman.avif"
+            src="/woman.jpg"
             className="rounded blur-sm"
             alt="a woman"
             width={300}
@@ -42,7 +42,7 @@ export default function IndexPage() {
             priority
           />
           <Image
-            src="/woman.avif"
+            src="/woman.jpg"
             className="z-10 -ml-24 mt-44 rounded"
             alt="a woman"
             width={300}
