@@ -25,9 +25,9 @@ export async function GET() {
   }
 
   if (usersList.every(Boolean) === true) {
-    NextResponse.json({ success: true })
+    return NextResponse.json({ success: true })
   } else {
-    NextResponse.json(
+    return NextResponse.json(
       { success: false },
       {
         status: 400,
