@@ -23,6 +23,7 @@ import { decrementCredits, deleteImagefromCloudinary } from "../actions"
 
 export default function EnhancerPage() {
   const [files, setFiles] = useState<File[]>([])
+  const [downloadStarted, setDownloadStarted] = useState(false)
   const [arbitrary, setArbitrary] = useState(false)
   const [publicId, setPublicId] = useState("")
   const user = useUser((state) => state.user)
@@ -108,6 +109,7 @@ export default function EnhancerPage() {
   }
 
   const downloadImageCallback = async () => {
+    setDownloadStarted(true)
     const { success, creditsCount } = await decrementCredits(
       user?.email as string
     )
@@ -130,10 +132,11 @@ export default function EnhancerPage() {
         description: `You only have ${creditsCount} left. Consider buying some credits to take full advantage of the platform.`,
       })
       await deleteImagefromCloudinary(publicId)
-
+      setDownloadStarted(false)
       submitImageForTransformation.reset()
       submitImageToCloudinary.reset()
     } else {
+      setDownloadStarted(false)
       toast({
         title: "Something went wrong",
         description: `Looks like something went wrong downloading the image, Please try again later.`,
@@ -247,6 +250,7 @@ export default function EnhancerPage() {
           </div>
         </div>
         <button
+          disabled={downloadStarted}
           className={`${buttonVariants({
             size: "lg",
             variant: "outline",
