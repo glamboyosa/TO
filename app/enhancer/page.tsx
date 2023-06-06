@@ -49,7 +49,6 @@ export default function EnhancerPage() {
       },
       maxFiles: 1,
       onDrop,
-      maxSize: 4194304,
     })
 
   const { data, isLoading, isError } = useQuery<UserAuthType>(
@@ -236,7 +235,7 @@ export default function EnhancerPage() {
           <div className="flex flex-col gap-6 ">
             <h3 className="text-xl">Original Picture</h3>
             <div
-              className={` w-[90vw]  rounded-lg shadow md:w-[37vw] ${
+              className={` h-[400px] w-[90vw]  rounded-lg shadow md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
             >
@@ -250,7 +249,7 @@ export default function EnhancerPage() {
           <div className="flex flex-col gap-6">
             <h3 className="text-xl">Enhanced Picture</h3>
             <div
-              className={`w-[90vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
+              className={`h-[400px] w-[90vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
             >
