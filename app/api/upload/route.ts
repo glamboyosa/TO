@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const formData = new FormData()
   try {
     const { cloudinaryURL }: { cloudinaryURL: string } = await request.json()
-    const output = await replicate.run(model, {
+    const output = await replicate.run(model2, {
       input: {
         image: cloudinaryURL,
       },

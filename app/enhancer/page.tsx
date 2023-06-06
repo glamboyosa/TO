@@ -227,28 +227,23 @@ export default function EnhancerPage() {
           <div className="flex flex-col gap-6 ">
             <h3 className="text-xl">Original Picture</h3>
 
-            <Image
+            <img
               src={submitImageForTransformation.data.input_url}
-              className={` overflow-hidden rounded-lg shadow ${
+              className={` w-[90vw] overflow-hidden rounded-lg shadow md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
-              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 35vw, 33vw"
               alt="your input image"
-              priority
             />
           </div>
           <div className="flex flex-col gap-6">
             <h3 className="text-xl">Enhanced Picture</h3>
 
-            <Image
+            <img
               src={submitImageForTransformation.data.output_url}
-              className={`overflow-hidden rounded-lg  shadow ${
+              className={`w-[90vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
               alt="your ouput upscaled image"
-              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 35vw, 33vw"
-              quality={95}
-              priority
             />
           </div>
         </div>
