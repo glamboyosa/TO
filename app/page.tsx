@@ -1,11 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 import { siteConfig } from "@/config/site"
+import useActiveTab from "@/lib/store/useActiveTab"
 import { buttonVariants } from "@/components/ui/button"
 import Toaster from "@/components/Toaster"
 
 export default function IndexPage() {
+  const setActiveTab = useActiveTab((state) => state.setActiveTab)
+  const { push } = useRouter()
   return (
     <div>
       <section className="container grid grid-cols-1 items-center gap-6 pb-8 pt-6 md:py-10 lg:grid-cols-2">
@@ -22,12 +26,15 @@ export default function IndexPage() {
             the power of AI. 100% Private. Open Source.
           </p>
           <div className="flex items-center justify-center">
-            <Link
-              href={siteConfig.links.enhancer}
+            <button
+              onClick={() => {
+                setActiveTab("enhancer")
+                push(siteConfig.links.enhancer)
+              }}
               className={`${buttonVariants({ size: "lg" })} mt-4`}
             >
               Try it out now
-            </Link>
+            </button>
           </div>
         </div>
         <div className="flex items-center justify-center overflow-hidden">
