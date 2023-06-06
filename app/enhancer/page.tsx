@@ -13,6 +13,7 @@ import { TypeAnimation } from "react-type-animation"
 import { PrismaUser, UserAuthType } from "@/types/user"
 import { getPublicId } from "@/lib/helpers/getPublicId"
 import { prismaClient } from "@/lib/prisma"
+import useActiveTab from "@/lib/store/useActiveTab"
 import useUser from "@/lib/store/useUser"
 import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
@@ -28,6 +29,7 @@ export default function EnhancerPage() {
   const [publicId, setPublicId] = useState("")
   const user = useUser((state) => state.user)
   const setUser = useUser((state) => state.setUser)
+  const setActiveTab = useActiveTab((state) => state.setActiveTab)
   const { toast } = useToast()
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -158,6 +160,9 @@ export default function EnhancerPage() {
     }
   }, [isDragReject, fileRejections])
   useLayoutEffect(() => {
+    if (window.location.pathname === "/enhancer") {
+      setActiveTab("enhancer")
+    }
     setArbitrary(!arbitrary)
   }, [])
 
