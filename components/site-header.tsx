@@ -37,7 +37,7 @@ export function SiteHeader() {
   }, [])
 
   // TO-DO NAVIGATION
-  if (!arbitrary) {
+  if (!arbitrary && theme === undefined) {
     return null
   }
 
@@ -64,11 +64,7 @@ export function SiteHeader() {
                 <motion.span
                   layoutId="bubble"
                   className={`absolute inset-0 z-10 bg-pink ${
-                    theme === undefined
-                      ? "mix-blend-lighten"
-                      : theme === "light"
-                      ? "mix-blend-darken"
-                      : "mix-blend-lighten"
+                    theme === "light" ? "mix-blend-darken" : "mix-blend-lighten"
                   }`}
                   style={{ borderRadius: 9999 }}
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
