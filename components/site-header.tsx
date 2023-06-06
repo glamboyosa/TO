@@ -1,6 +1,6 @@
 "use client"
 
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { UserButton, useUser } from "@clerk/nextjs"
@@ -27,7 +27,7 @@ export function SiteHeader() {
   // basically when the UI mounts changes we wanna force a re-render for the dark / light mode to be in sync
   //
   console.log(window.location.pathname)
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.location.pathname === "/") {
       setActiveTab("home")
     } else {
