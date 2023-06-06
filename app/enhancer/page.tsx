@@ -19,7 +19,6 @@ import { buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 import Toaster from "@/components/Toaster"
 import CookingLoader from "@/components/loading/cooking-loader"
-import { SiteHeader } from "@/components/site-header"
 
 import { decrementCredits, deleteImagefromCloudinary } from "../actions"
 
@@ -71,7 +70,7 @@ export default function EnhancerPage() {
     setFiles([])
   }
   const { push } = useRouter()
-  const { theme } = useTheme()
+  const { resolvedTheme: theme } = useTheme()
   async function convertFileToDataUrl(blobOrFile: File | Blob) {
     const reader = new FileReader()
     reader.readAsDataURL(blobOrFile)
@@ -226,7 +225,6 @@ export default function EnhancerPage() {
   ) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <SiteHeader />
         <h1 className=" mb-8 mt-24 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl">
           All done 😄
         </h1>

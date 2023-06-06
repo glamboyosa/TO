@@ -19,7 +19,7 @@ const tabs = [
 export function SiteHeader() {
   const activeTab = useActiveTab((state) => state.activeTab)
   const setActiveTab = useActiveTab((state) => state.setActiveTab)
-  const { theme } = useTheme()
+  const { resolvedTheme: theme } = useTheme()
   const { isSignedIn, isLoaded } = useUser()
 
   const [arbitrary, setArbitrary] = useState(false)

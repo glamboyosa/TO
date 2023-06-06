@@ -49,6 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system">
             <QueryProvider>
               <div className=" flex min-h-screen flex-col items-center justify-center">
+                <SiteHeader />
                 <div className="">{children}</div>
               </div>
             </QueryProvider>
