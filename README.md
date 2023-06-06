@@ -1,22 +1,47 @@
-# next-template
+# TO
 
-A Next.js 13 template for building apps with Radix UI and Tailwind CSS.
+TO is an application to upscale your low resolution images.
 
-## Usage
+## Tech
+
+- Next.js 13
+- Tailwind
+- Planetscale
+- Prisma
+- Clerk.dev
+- shadcn/ui
+- Resend & React Email
+- Vercel
+- Replicate
+- T3 Env
+- Zod
+- Zustand
+- Tanstack Query
+- Cloudinary
+
+## Run Locally
+
+If you'd like to run locally, clone this repo:
 
 ```bash
-npx create-next-app -e https://github.com/shadcn/next-template
+git clone https://github.com/glamboyosa/to
 ```
 
-## Features
+Next, install dependencies
 
-- Radix UI Primitives
-- Tailwind CSS
-- Fonts with `next/font`
-- Icons from [Lucide](https://lucide.dev)
-- Dark mode with `next-themes`
-- Automatic import sorting with `@ianvs/prettier-plugin-sort-imports`
-- Tailwind CSS class sorting, merging and linting.
+```bash
+npm install
+```
+
+Copy the environment variables and set up relevant accounts (Cloudinary, Clerk, PlanetScale)
+
+```bash
+cp .env.example .env
+```
+
+## Feature Request
+
+If you'd like to see a feature please open an issue.
 
 ## License
 
