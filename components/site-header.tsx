@@ -45,7 +45,7 @@ export function SiteHeader() {
     // eslint-disable-next-line tailwindcss/classnames-order
     <div
       className={`${
-        theme === "light" ? "bg-white" : "bg-black"
+        theme === "light" ? "bg-white text-black" : "bg-black text-white"
       } fixed top-[1vh] z-20 w-auto rounded-md p-2 font-serif  shadow-xl xl:top-[5vh]`}
     >
       <div className="cursor flex space-x-6">
