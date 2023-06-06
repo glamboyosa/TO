@@ -106,6 +106,8 @@ export default function EnhancerPage() {
       }
       await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
+      submitImageForTransformation.reset()
+      submitImageToCloudinary.reset()
       toast({
         title: "Uh Oh! Something went wrong",
 
