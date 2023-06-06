@@ -14,7 +14,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 const tabs = [
   { id: "home", label: "Home", link: "/" },
-  { id: "Enhancer", label: "Enhancer", link: "/enhancer" },
+  { id: "enhancer", label: "Enhancer", link: "/enhancer" },
 ]
 export function SiteHeader() {
   const activeTab = useActiveTab((state) => state.activeTab)
@@ -26,19 +26,21 @@ export function SiteHeader() {
 
   // basically when the UI mounts changes we wanna force a re-render for the dark / light mode to be in sync
   //
-
+  console.log(window.location.pathname)
   useLayoutEffect(() => {
+    if (window.location.pathname === "/") {
+      setActiveTab("home")
+    } else {
+      setActiveTab("enhancer")
+    }
     setArbitrary(!arbitrary)
   }, [])
+
   // TO-DO NAVIGATION
   if (!arbitrary) {
     return null
   }
-  if (window.location.pathname === "/") {
-    setActiveTab("home")
-  } else {
-    setActiveTab("enhancer")
-  }
+
   return (
     // eslint-disable-next-line tailwindcss/classnames-order
     <div
