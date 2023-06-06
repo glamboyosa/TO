@@ -44,7 +44,10 @@ export async function GET() {
     })
     if (newUser) {
       const data = await resend.sendEmail({
-        from: "onboarding@resend.dev",
+        from:
+          process.env.NODE_ENV === "development"
+            ? "onboarding@resend.dev"
+            : "osa@glamboyosa.xyz",
         to: newUser.email,
         subject: "Thank you for signing up!",
         react: SignUpEmail({ firstName: newUser.firstName as string }),

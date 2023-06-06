@@ -32,7 +32,10 @@ export const decrementCredits = async (
     if (currentUserWithCredits === null) {
       if (currentUser?.freeCredits === 0) {
         const data = await resend.sendEmail({
-          from: "onboarding@resend.dev",
+          from:
+            process.env.NODE_ENV === "development"
+              ? "onboarding@resend.dev"
+              : "osa@glamboyosa.xyz",
           to: currentUser.email,
           subject: "No free credits left",
           react: NoCredits({
