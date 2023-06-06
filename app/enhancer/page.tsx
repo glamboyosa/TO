@@ -104,6 +104,11 @@ export default function EnhancerPage() {
       }
       await submitImageForTransformation.mutateAsync(body)
     } catch (error) {
+      toast({
+        title: "Uh Oh! Something went wrong",
+
+        description: `We've had trouble processing your image. Please try again.`,
+      })
       console.log(error)
     }
   }
