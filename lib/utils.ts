@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const generateSHA1 = (data: string) => {
-  const hash = crypto.createHash("sha1")
+  const hash = crypto.createHash("sha256")
   hash.update(data)
   return hash.digest("hex")
 }
