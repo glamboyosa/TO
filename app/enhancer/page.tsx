@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
@@ -144,6 +145,7 @@ export default function EnhancerPage() {
       setDownloadStarted(false)
       submitImageForTransformation.reset()
       submitImageToCloudinary.reset()
+      setFiles([])
     } else {
       setDownloadStarted(false)
       toast({
@@ -233,25 +235,31 @@ export default function EnhancerPage() {
         <div className="mb-8  flex aspect-auto flex-col items-center gap-8 md:flex-row">
           <div className="flex flex-col gap-6 ">
             <h3 className="text-xl">Original Picture</h3>
-
-            <img
-              src={submitImageForTransformation.data.input_url}
-              className={` w-[90vw] overflow-hidden rounded-lg shadow md:w-[37vw] ${
+            <div
+              className={` w-[90vw]  rounded-lg shadow md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
-              alt="your input image"
-            />
+            >
+              <img
+                className="object-contain"
+                src={submitImageForTransformation.data.input_url}
+                alt="your input image"
+              />
+            </div>
           </div>
           <div className="flex flex-col gap-6">
             <h3 className="text-xl">Enhanced Picture</h3>
-
-            <img
-              src={submitImageForTransformation.data.output_url}
+            <div
               className={`w-[90vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
-              alt="your ouput upscaled image"
-            />
+            >
+              <img
+                src={submitImageForTransformation.data.output_url}
+                className="object-contain"
+                alt="your ouput upscaled image"
+              />
+            </div>
           </div>
         </div>
         <button
