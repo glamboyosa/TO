@@ -15,6 +15,7 @@ export async function GET() {
       data: {
         freeCreditsCreatedAt: new Date(),
         freeCreditsExpiry: freeCreditsExpiryDate,
+        freeCredits: user.freeCredits === 0 ? 4 : user.freeCredits + 4,
       },
       include: {
         paidCredits: true,
