@@ -46,7 +46,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem={false}
+            forcedTheme="dark"
+          >
             <QueryProvider>
               <div className=" flex min-h-screen flex-col items-center justify-center">
                 <SiteHeader />
