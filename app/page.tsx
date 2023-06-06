@@ -4,10 +4,12 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
 import Toaster from "@/components/Toaster"
+import { SiteHeader } from "@/components/site-header"
 
 export default function IndexPage() {
   return (
     <div>
+      <SiteHeader />
       <section className="container grid grid-cols-1 items-center gap-6 pb-8 pt-6 md:py-10 lg:grid-cols-2">
         <div className="flex max-w-[980px] flex-col items-center justify-center gap-2">
           <h1 className="mt-20 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl xl:mt-0">

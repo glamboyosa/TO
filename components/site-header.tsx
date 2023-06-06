@@ -37,7 +37,7 @@ export function SiteHeader() {
   }, [])
 
   // TO-DO NAVIGATION
-  if (!arbitrary && theme === undefined) {
+  if (!arbitrary) {
     return null
   }
 
