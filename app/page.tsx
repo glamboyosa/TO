@@ -2,12 +2,10 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import useActiveTab from "@/lib/store/useActiveTab"
 import { buttonVariants } from "@/components/ui/button"
 import Toaster from "@/components/Toaster"
 
 export default function IndexPage() {
-  const setActiveTab = useActiveTab((state) => state.setActiveTab)
   return (
     <div>
       <section className="container grid grid-cols-1 items-center gap-6 pb-8 pt-6 md:py-10 lg:grid-cols-2">
