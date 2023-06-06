@@ -227,6 +227,7 @@ export default function EnhancerPage() {
               className={` overflow-hidden rounded-lg shadow ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 35vw"
               alt="your input image"
               width={530}
               height={700}
@@ -242,8 +243,7 @@ export default function EnhancerPage() {
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
               alt="your ouput upscaled image"
-              width={530}
-              height={700}
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 35vw"
               quality={90}
               priority
             />
