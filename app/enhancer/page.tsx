@@ -219,7 +219,7 @@ export default function EnhancerPage() {
           All done 😄
         </h1>
         <div className="mb-8  flex aspect-auto flex-col items-center gap-8 md:flex-row">
-          <div className="flex flex-col gap-6 overflow-hidden">
+          <div className="flex flex-col gap-6 ">
             <h3 className="text-xl">Original Picture</h3>
 
             <Image
