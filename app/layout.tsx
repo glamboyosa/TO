@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     icon: "/rob.png",
     shortcut: "/rob-16x16.png",
   },
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: "https://to.glamboyosa.xyz",
+  },
 }
 
 interface RootLayoutProps {

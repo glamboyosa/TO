@@ -81,14 +81,12 @@ export default function EnhancerPage() {
     return reader.result
   }
   const submitHandler = async () => {
-    console.log("LOG?")
     const formData = new FormData()
     const file = files[0]
-    console.log(files[0])
+
     try {
       const base64 = await convertFileToDataUrl(file)
 
-      console.log(base64, "BASE64")
       formData.append("file", base64 as string)
       formData.append("upload_preset", env.NEXT_PUBLIC_UPLOAD_PRESET)
 
@@ -221,12 +219,12 @@ export default function EnhancerPage() {
           All done 😄
         </h1>
         <div className="mb-8  flex aspect-auto flex-col items-center gap-8 md:flex-row">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 overflow-hidden">
             <h3 className="text-xl">Original Picture</h3>
 
             <Image
               src={submitImageForTransformation.data.input_url}
-              className={`rounded-lg shadow ${
+              className={` overflow-hidden rounded-lg shadow ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
               alt="your input image"
@@ -240,12 +238,13 @@ export default function EnhancerPage() {
 
             <Image
               src={submitImageForTransformation.data.output_url}
-              className={`rounded-lg shadow  ${
+              className={`overflow-hidden rounded-lg  shadow ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
-              alt="your input image"
+              alt="your ouput upscaled image"
               width={530}
               height={700}
+              quality={90}
               priority
             />
           </div>

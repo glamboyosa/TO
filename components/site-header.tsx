@@ -78,7 +78,11 @@ export function SiteHeader() {
         ))}
         <div className="cursor flex items-center space-x-6">
           {
-            <Link href={"https://github.com/glamboyosa/to"}>
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              href={"https://github.com/glamboyosa/to"}
+            >
               <Github />
             </Link>
           }

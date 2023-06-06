@@ -18,14 +18,12 @@ export default function IndexPage() {
             <div className="mt-2">at Your Fingertips</div>
           </h1>
           <p className="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
-            Upscale and Enhance your blurry pictures with the power of AI. 100%
-            Private. Open Source.
+            Upscale and Enhance your low resolution, low quality pictures with
+            the power of AI. 100% Private. Open Source.
           </p>
           <div className="flex items-center justify-center">
             <Link
               href={siteConfig.links.enhancer}
-              target="_blank"
-              rel="noreferrer"
               className={`${buttonVariants({ size: "lg" })} mt-4`}
             >
               Try it out now
