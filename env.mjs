@@ -3,8 +3,7 @@ import { z } from "zod"
 
 export const env = createEnv({
   server: {
-    DATABASE_URL_DEV: z.string().url(),
-    DATABASE_URL_MAIN: z.string().url(),
+    DATABASE_URL: z.string().url(),
     DEEPAI_API_KEY: z.string().min(20),
     STABILITY_API_KEY: z.string().min(20),
     REPLICATE_API_KEY: z.string().min(20),
@@ -20,8 +19,7 @@ export const env = createEnv({
     NEXT_PUBLIC_UPLOAD_PRESET: z.string().max(16),
   },
   runtimeEnv: {
-    DATABASE_URL_DEV: process.env.DATABASE_URL_DEV,
-    DATABASE_URL_MAIN: process.env.DATABASE_URL_MAIN,
+    DATABASE_URL: process.env.DATABASE_URL,
     DEEPAI_API_KEY: process.env.DEEPAI_API_KEY,
     STABILITY_API_KEY: process.env.STABILITY_API_KEY,
     REPLICATE_API_KEY: process.env.REPLICATE_API_KEY,
