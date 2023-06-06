@@ -30,7 +30,6 @@ export default function EnhancerPage() {
   const { toast } = useToast()
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      console.log("trigger on click and on drop")
       setFiles([...files, ...acceptedFiles])
     },
     [files]
@@ -93,7 +92,7 @@ export default function EnhancerPage() {
       const cloudinaryResponse = await submitImageToCloudinary.mutateAsync(
         formData
       )
-      console.log(cloudinaryResponse, "CLOUDINARY RESPONSE")
+
       const publicId = getPublicId(cloudinaryResponse.secure_url)
       setPublicId(publicId)
       // transform the image
@@ -151,8 +150,6 @@ export default function EnhancerPage() {
     }
   }, [isDragReject, fileRejections])
   useLayoutEffect(() => {
-    console.log(theme)
-
     setArbitrary(!arbitrary)
   }, [])
 
