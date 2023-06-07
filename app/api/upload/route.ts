@@ -1,7 +1,6 @@
-import { writeFile } from "fs"
+
 import { NextResponse } from "next/server"
 import { env } from "@/env.mjs"
-import FormData from "form-data"
 import Replicate from "replicate"
 
 import { ImageAIResult } from "@/types/enhancer"
@@ -15,7 +14,6 @@ const model =
 const model2 =
   "nightmareai/real-esrgan:42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b"
 export async function POST(request: Request) {
-  const formData = new FormData()
   try {
     const { cloudinaryURL }: { cloudinaryURL: string } = await request.json()
     const output = await replicate.run(model2, {
