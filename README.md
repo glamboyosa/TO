@@ -18,6 +18,7 @@ TO is an application to upscale your low resolution images.
 - Zustand
 - Tanstack Query
 - Cloudinary
+- Popsy.co (for illustrations)
 
 ## Run Locally
 
