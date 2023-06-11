@@ -227,35 +227,35 @@ export default function EnhancerPage() {
     !submitImageForTransformation.isLoading
   ) {
     return (
-      <div className="flex flex-col items-center justify-center">
-        <h1 className=" mb-8 mt-24 text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-5xl">
+      <div>
+        <h1 className=" mb-8 mt-24 text-2xl font-extrabold leading-tight tracking-tighter  md:text-5xl lg:text-5xl">
           All done 😄
         </h1>
         <div className="mb-8  flex aspect-auto flex-col items-center gap-8 md:flex-row">
           <div className="flex flex-col gap-6 ">
-            <h3 className="text-xl">Original Picture</h3>
+            <h3 className="text-lg md:text-xl">Original Picture</h3>
             <div
               className={` h-[400px] w-[90vw]  rounded-lg shadow md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
             >
               <img
-                className="object-contain"
+                className="object-cover"
                 src={submitImageForTransformation.data.input_url}
                 alt="your input image"
               />
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <h3 className="text-xl">Enhanced Picture</h3>
+            <h3 className="text-lg md:text-xl">Enhanced Picture</h3>
             <div
-              className={`h-[400px] w-[90vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
+              className={`h-[400px] w-[80vw] overflow-hidden rounded-lg shadow  md:w-[37vw] ${
                 theme === "light" ? "shadow-black/30" : "shadow-white/30"
               }`}
             >
               <img
                 src={submitImageForTransformation.data.output_url}
-                className="object-contain"
+                className="object-cover"
                 alt="your ouput upscaled image"
               />
             </div>
@@ -364,6 +364,7 @@ export default function EnhancerPage() {
           </h1>
         </div>
       )}
+      <Toaster />
     </section>
   )
 }
