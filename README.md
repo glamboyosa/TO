@@ -8,7 +8,7 @@ TO is an application to upscale your low resolution images.
 - Tailwind
 - Planetscale
 - Prisma
-- Clerk.dev
+- Clerk.com
 - shadcn/ui
 - Resend & React Email
 - Vercel
